@@ -21,9 +21,28 @@ typedef struct Stru_FullInfo{
     Stru_ClockInfo clockInfo;
 }Stru_FullInfo;
 
+typedef Stru_FullInfo Content;
+
+typedef struct Node
+{
+    struct Node * lson;
+    struct Node * rson;
+    struct Node * dad;
+    Content * cont;
+    int keyvalue;
+} Node;
+
+
 //记录了一周的表格，包含了若干人，以及年日。
 typedef struct TableOfOneWeek{
     int year;
     int day;
-    
+    Node* rootNode;
 }TableOfOneWeek;
+
+int AddEmployee(Stru_BaseInfo a);
+int DelEmployee(int id);
+int ClockIn(int id );
+int SaveFile(TableOfOneWeek* a);
+int LoadFile(char* filename);
+Stru_FullInfo** GetAllClockInfo(Node* root);
