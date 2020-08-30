@@ -1,9 +1,7 @@
-#ifndef __MY_RBTREE_H__
-#define __MY_RBTREE_H__
-#include "usr_sql3.h"
+#pragma once
+#include "ClockMachine.h"
 
-typedef Employee Content;
-
+typedef Stru_FullInfo Content;
 
 typedef struct Node
 {
@@ -11,7 +9,7 @@ typedef struct Node
     struct Node * rson;
     struct Node * dad;
     Content * cont;
-    int value;
+    int keyvalue;
     /* data */
 } Node;
 
@@ -19,5 +17,4 @@ Node * CreatRBTree();
 int AddNode(Node* newnode);
 int RemoveNode(Node * node);
 Node * FindNode(int value);
-
-#endif
+int SaveRBTree(char * filename, );
