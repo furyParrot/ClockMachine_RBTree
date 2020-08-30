@@ -10,7 +10,6 @@ typedef struct Node
     struct Node * dad;
     Content * cont;
     int keyvalue;
-    /* data */
 } Node;
 
 Node * CreatRBTree();
