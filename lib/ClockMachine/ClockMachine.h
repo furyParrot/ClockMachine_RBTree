@@ -1,10 +1,10 @@
 #pragma once
 //记录着每个人的基础信息
 typedef struct Stru_BaseInfo{
+    int id;
     char name[20];
     int age;
     char gender;
-    int id;
     long phonenum;
     char email[100];
 }Stru_BaseInfo;
@@ -25,11 +25,12 @@ typedef Stru_FullInfo Content;
 
 typedef struct Node
 {
+    int keyvalue;
+    int Red1Black0;
+    Content * cont;
     struct Node * lson;
     struct Node * rson;
     struct Node * dad;
-    Content * cont;
-    int keyvalue;
 } Node;
 
 

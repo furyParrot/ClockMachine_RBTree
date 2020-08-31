@@ -2,7 +2,7 @@
 #include "../ClockMachine/ClockMachine.h"
 
 Node * CreatRBTree();
-int AddNode(Node* newnode);
+int AddNode(Node * root, Node* newnode);
 int RemoveNode(Node * node);
 Node * FindNode(int keyvalue);
 int SaveRBTree(char * filename , char* (*tostring)(Node* a));
