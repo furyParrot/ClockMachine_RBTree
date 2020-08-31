@@ -162,6 +162,7 @@ int AddNode(Node * root , Node* newnode){
             }
         }
     }
+    return 1;
 }
 int RemoveNode(Node * node){
 
@@ -244,8 +245,14 @@ int main(){
     d.rson = &e;
 
 
+    Node* root = CreatRBTree();
+    AddNode(root,&a);
+    AddNode(root,&b);
+    AddNode(root,&e);
+    AddNode(root,&d);
 
-    SomeNodes c = GetAllNodes(&a,10);
+
+    SomeNodes c = GetAllNodes(root,10);
     printf("\nc.num = %d\n",c.num);
     
     for(int i =0;i<c.num;i++){
