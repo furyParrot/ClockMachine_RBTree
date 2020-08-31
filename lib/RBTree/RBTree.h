@@ -9,4 +9,3 @@ int SaveRBTree(char * filename , char* (*tostring)(Node* a));
 Node* LoadRBTree(char * filename, Node* (*byScanf)(char* s));
 Node** GetAllNodes(Node* root ,int MaxNum);
 
-void NodeCpy(Node* source , Node* target);

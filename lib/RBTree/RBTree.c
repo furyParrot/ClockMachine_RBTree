@@ -195,12 +195,3 @@ void GetAllNodes2(Node* root , Node ** datas){
     }
     return;
 }
-
-
-void NodeCpy(Node* source , Node* target){
-    target->keyvalue = source->keyvalue;
-    target->cont = source->cont;
-    target->rson = source->rson;
-    target->lson = source->lson;
-    target->Red1Black0 = source->Red1Black0;
-}
