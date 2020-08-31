@@ -169,22 +169,31 @@ Node * FindNode(int keyvalue){}
 int SaveRBTree(char * filename , char* (*tostring)(Node* a)){}
 Node* LoadRBTree(char * filename, Node* (*byScanf)(char* s)){}
 
+Node** datas;
+int CurrentIndex =0;
 Node** GetAllNodes(Node* root ,int MaxNum){
-    if(root->dad==NULL){
-        Node** datas = malloc(sizeof(Node*)*MaxNum);
-        int CurrentIndex =0;
-    }else
-    {
-        if(root->lson!=NULL){
-            GetAllNodes(root->lson,MaxNum);
-
-        }
-    }
-}
-void GetAllNodes2(Node* root){
+    datas = malloc(sizeof(Node*)*MaxNum);
+    CurrentIndex =0;
     if(root->lson!=NULL){
-        GetAllNodes2(root->lson);
+        GetAllNodes2(root->lson,datas);
     }
+    datas[CurrentIndex] = root;
+    CurrentIndex++;
+    if(root->rson!=NULL){
+        GetAllNodes2(root->rson,datas);
+    }
+    return datas;
+}
+void GetAllNodes2(Node* root , Node ** datas){
+    if(root->lson!=NULL){
+        GetAllNodes2(root->lson,datas);
+    }
+    datas[CurrentIndex] = root;
+    CurrentIndex++;
+    if(root->rson!=NULL){
+        GetAllNodes2(root->rson,datas);
+    }
+    return;
 }
 
 
