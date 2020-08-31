@@ -6,19 +6,25 @@ Node * CreatRBTree(){
     Node * a = (Node*)malloc(sizeof(Node));
     a->keyvalue = 0;
     a->Red1Black0 = 0;
-    a->cont = NULL;
+    a->cont = (Content*)malloc(sizeof(Content));
     a->lson = NULL;
     a->rson = NULL;
     a->dad = NULL;
     return a;
 }
+
+void ContCpy(Content* tar,Content* sor){
+    tar->baseInfo = sor->baseInfo;
+    tar->clockInfo = sor->clockInfo;
+}
+
 int AddNode(Node * root , Node* newnode){
     //是首个节点
     if(root->keyvalue==0){
         //将值赋值给根节点。
         root->keyvalue = newnode->keyvalue;
-        root->cont = newnode->cont;
-        free(newnode);
+        ContCpy(root->cont , newnode->cont);
+        //free(newnode);
     }
     //不是根节点
     else{
@@ -42,8 +48,10 @@ int AddNode(Node * root , Node* newnode){
                         //爸爸叔叔爷爷同时变色
                         root->Red1Black0 = 0;
                         if(dadRight1Left0==1){
+                            if(root->dad->lson!=NULL)
                             root->dad->lson->Red1Black0 = 0;
                         }else{
+                            if(root->dad->rson!=NULL)
                             root->dad->rson->Red1Black0 = 0;
                         }
                         root->dad->Red1Black0 = 1;
@@ -54,40 +62,45 @@ int AddNode(Node * root , Node* newnode){
                         if(root->dad->dad==NULL){
                             root->dad->Red1Black0 = 0;
                         }else{
+                            int ppRight1Left0 = (root->dad->dad->rson==NULL)?0:((root->dad->keyvalue == root->dad->dad->rson->keyvalue)?1:0);
+                            if(ppRight1Left0==1){
+                                root->dad->dad->rson = NULL;
+                                root->dad->dad = NULL;
+                            }
                             AddNode(root->dad->dad,root->dad);
                         }
                     }else{//叔叔是黑色
                         if(dadRight1Left0==1){//爸爸是爷爷的右儿子，和我同向：
-                            //          root 顶替掉 root->dad,并且变黑
-                            //创建一个新节点，cont 、 keyvalue、lson和root dad一样，颜色红，rson是root的lson
-                            Node * grandpa = (Node *)malloc(sizeof(Node));
-                            grandpa->cont = root->dad->cont;
-                            grandpa->keyvalue = root->dad->keyvalue;
-                            grandpa->lson = root->dad->lson;
-                            if(root->dad->lson!=NULL) root->dad->lson->dad =grandpa; 
-                            grandpa->Red1Black0 = 1;
 
-                            grandpa->rson = root->lson;
-                            if(root->lson!=NULL) root->lson->dad = grandpa;
+                            Node* newpapa = (Node*)malloc(sizeof(Node));
+                            newpapa->keyvalue = root->dad->keyvalue;
 
-                            grandpa->dad = root->dad;
+                            newpapa->cont = (Content*)malloc(sizeof(Content));
+                            ContCpy(newpapa->cont,root->dad->cont);
 
-                            root->dad->cont = root->cont;
-                            root->dad->keyvalue = root->keyvalue;
-                            root->dad->Red1Black0 = 0;
-                            root->dad->lson = grandpa;
-                            if(root->lson!=NULL)root->lson->dad = root->dad;
+                            if(root->dad->lson!=NULL) root->dad->lson->dad = newpapa;
+                            newpapa->lson = root->dad->lson;
+                            
+                            if(root->lson!=NULL) root->lson->dad = newpapa;
+                            newpapa->rson = root->lson;
+                            
+                            root->dad->lson = newpapa;
+                            newpapa->dad = root->dad;
+
                             root->dad->rson = newnode;
                             newnode->dad = root->dad;
+
+                            root->dad->Red1Black0=0;
+                            newpapa->Red1Black0 =1;
                             free(root);
 
                         }else{//爸爸是爷爷的左儿子，和我反向：需要旋转操作
                             root->rson = newnode->lson;
                             if(newnode->lson!=NULL) newnode->lson->dad = root;
-                            newnode->lson = root;
+                            newnode->lson = NULL;
                             root->dad->lson = newnode;
                             newnode->dad = root->dad;
-                            root->dad = newnode;
+                            root->dad = NULL;
                             AddNode(newnode,root);
                         }
                     }
@@ -108,8 +121,10 @@ int AddNode(Node * root , Node* newnode){
                         //爸爸叔叔爷爷同时变色
                         root->Red1Black0 = 0;
                         if(dadRight1Left0==1){
+                            if(root->dad->lson!=NULL)
                             root->dad->lson->Red1Black0 = 0;
                         }else{
+                            if(root->dad->rson!=NULL)
                             root->dad->rson->Red1Black0 = 0;
                         }
                         root->dad->Red1Black0 = 1;
@@ -120,41 +135,46 @@ int AddNode(Node * root , Node* newnode){
                         if(root->dad->dad==NULL){
                             root->dad->Red1Black0 = 0;
                         }else{
+                            int ppRight1Left0 = (root->dad->dad->rson==NULL)?0:((root->dad->keyvalue == root->dad->dad->rson->keyvalue)?1:0);
+                            if(ppRight1Left0==1){
+                                root->dad->dad->rson = NULL;
+                                root->dad->dad = NULL;
+                            }
                             AddNode(root->dad->dad,root->dad);
                         }
                     }else{//叔叔是黑色
                         if(dadRight1Left0==0){//爸爸是爷爷的左儿子，和我同向：
-                            //          root 顶替掉 root->dad,并且变黑
-                            //创建一个新节点，cont 、 keyvalue、lson和root dad一样，颜色红，rson是root的lson
                             
-                            Node * grandpa = (Node *)malloc(sizeof(Node));
-                            grandpa->cont = root->dad->cont;
-                            grandpa->keyvalue = root->dad->keyvalue;
-                            grandpa->rson = root->dad->rson;
-                            if(root->dad->rson!=NULL) root->dad->rson->dad =grandpa; 
-                            grandpa->Red1Black0 = 1;
+                            Node* newpapa = (Node*)malloc(sizeof(Node));
+                            newpapa->keyvalue = root->dad->keyvalue;
 
-                            grandpa->lson = root->rson;
-                            if(root->rson!=NULL) root->rson->dad = grandpa;
+                            newpapa->cont = (Content*)malloc(sizeof(Content));
+                            ContCpy(newpapa->cont,root->dad->cont);
 
-                            grandpa->dad = root->dad;
+                            if(root->dad->rson!=NULL) root->dad->rson->dad = newpapa;
+                            newpapa->rson = root->dad->rson;
+                            
+                            if(root->rson!=NULL) root->rson->dad = newpapa;
+                            newpapa->lson = root->rson;
+                            
+                            root->dad->rson = newpapa;
+                            newpapa->dad = root->dad;
 
-                            root->dad->cont = root->cont;
-                            root->dad->keyvalue = root->keyvalue;
-                            root->dad->Red1Black0 = 0;
-                            root->dad->rson = grandpa;
-                            if(root->rson!=NULL)root->rson->dad = root->dad;
                             root->dad->lson = newnode;
                             newnode->dad = root->dad;
+
+                            root->dad->Red1Black0=0;
+                            newpapa->Red1Black0 =1;
                             free(root);
+
 
                         }else{//爸爸是爷爷的右儿子，和我反向：需要旋转操作
                             root->lson = newnode->rson;
                             if(newnode->rson!=NULL) newnode->rson->dad = root;
-                            newnode->rson = root;
+                            newnode->rson = NULL;
                             root->dad->rson = newnode;
                             newnode->dad = root->dad;
-                            root->dad = newnode;
+                            root->dad = NULL;
                             AddNode(newnode,root);
                         }
                     }
@@ -165,7 +185,7 @@ int AddNode(Node * root , Node* newnode){
     return 1;
 }
 int RemoveNode(Node * node){
-
+    return 0;
 }
 Node * FindNode(int keyvalue){}
 int SaveRBTree(char * filename , char* (*tostring)(Node* a)){}
@@ -246,15 +266,9 @@ int main(){
 
 
     Node* root = CreatRBTree();
-    AddNode(root,&a);
-    AddNode(root,&b);
-    AddNode(root,&e);
-    AddNode(root,&d);
-
-
-    SomeNodes c = GetAllNodes(root,10);
-    printf("\nc.num = %d\n",c.num);
+    AddNode(root,&a);AddNode(root,&b);AddNode(root,&d);AddNode(root,&e);
     
+    SomeNodes c = GetAllNodes(root,10);
     for(int i =0;i<c.num;i++){
         dumpNode(*c.datas[i]);
     }

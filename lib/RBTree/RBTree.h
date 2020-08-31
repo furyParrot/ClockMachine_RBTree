@@ -1,5 +1,6 @@
 #pragma once
 #include "../ClockMachine/ClockMachine.h"
+
 typedef struct SomeNodes{
     Node** datas;
     int num;
