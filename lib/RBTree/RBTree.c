@@ -249,20 +249,17 @@ int main(){
     Stru_FullInfo s2f = {s2,s2c};
     Node b = {7,1,&s2f,NULL,NULL,NULL};
 
-    a.lson = &b;
 
     Stru_BaseInfo s3 = {7,"vew",22,'f',17777777,"41819@qq.com"};
     Stru_ClockInfo s3c;
     Stru_FullInfo s3f = {s3,s3c};
     Node d = {12,1,&s3f,NULL,NULL,NULL};
-    a.rson = &d;
 
 
     Stru_BaseInfo s4 = {7,"ddd",22,'f',17777777,"41819@qq.com"};
     Stru_ClockInfo s4c;
     Stru_FullInfo s4f = {s4,s4c};
     Node e = {19,1,&s4f,NULL,NULL,NULL};
-    d.rson = &e;
 
 
     Node* root = CreatRBTree();
