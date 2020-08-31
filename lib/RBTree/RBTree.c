@@ -1,5 +1,6 @@
 #include "RBTree.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 Node * CreatRBTree(){
     Node * a = (Node*)malloc(sizeof(Node));
@@ -9,7 +10,7 @@ Node * CreatRBTree(){
     a->lson = NULL;
     a->rson = NULL;
     a->dad = NULL;
-    return &a;
+    return a;
 }
 int AddNode(Node * root , Node* newnode){
     //是首个节点
@@ -171,9 +172,12 @@ Node* LoadRBTree(char * filename, Node* (*byScanf)(char* s)){}
 
 Node** datas;
 int CurrentIndex =0;
-Node** GetAllNodes(Node* root ,int MaxNum){
+int maxnum;
+SomeNodes GetAllNodes(Node* root ,int MaxNum){
     datas = malloc(sizeof(Node*)*MaxNum);
     CurrentIndex =0;
+    maxnum = MaxNum;
+
     if(root->lson!=NULL){
         GetAllNodes2(root->lson,datas);
     }
@@ -182,9 +186,15 @@ Node** GetAllNodes(Node* root ,int MaxNum){
     if(root->rson!=NULL){
         GetAllNodes2(root->rson,datas);
     }
-    return datas;
+    SomeNodes res;
+    res.datas = datas;
+    res.num = CurrentIndex;
+    return res;
 }
 void GetAllNodes2(Node* root , Node ** datas){
+    if(CurrentIndex>=maxnum){
+        return ;
+    }
     if(root->lson!=NULL){
         GetAllNodes2(root->lson,datas);
     }
@@ -194,4 +204,51 @@ void GetAllNodes2(Node* root , Node ** datas){
         GetAllNodes2(root->rson,datas);
     }
     return;
+}
+
+void dumpNode(Node a){
+
+    printf("id:%d\t",a.keyvalue);
+    printf("name:%s\t\n",a.cont->baseInfo.name);
+
+
+
+}
+
+int main(){
+    printf("hello world\n");
+    Stru_BaseInfo s1 = {10,"lyw",22,'m',17777777,"41819@qq.com"};
+    Stru_ClockInfo s1c;
+    Stru_FullInfo s1f = {s1,s1c};
+    Node a = {10,1,&s1f,NULL,NULL,NULL};
+
+
+    Stru_BaseInfo s2 = {7,"lyqwe",22,'f',17777777,"41819@qq.com"};
+    Stru_ClockInfo s2c;
+    Stru_FullInfo s2f = {s2,s2c};
+    Node b = {7,1,&s2f,NULL,NULL,NULL};
+
+    a.lson = &b;
+
+    Stru_BaseInfo s3 = {7,"vew",22,'f',17777777,"41819@qq.com"};
+    Stru_ClockInfo s3c;
+    Stru_FullInfo s3f = {s3,s3c};
+    Node d = {12,1,&s3f,NULL,NULL,NULL};
+    a.rson = &d;
+
+
+    Stru_BaseInfo s4 = {7,"ddd",22,'f',17777777,"41819@qq.com"};
+    Stru_ClockInfo s4c;
+    Stru_FullInfo s4f = {s4,s4c};
+    Node e = {19,1,&s4f,NULL,NULL,NULL};
+    d.rson = &e;
+
+
+
+    SomeNodes c = GetAllNodes(&a,10);
+    printf("\nc.num = %d\n",c.num);
+    
+    for(int i =0;i<c.num;i++){
+        dumpNode(*c.datas[i]);
+    }
 }
