@@ -35,8 +35,8 @@ typedef struct Stru_FullInfo{
 4，上、下班打卡  int SomeBodyClockIn(int id) 
                 //返回值是1就是打卡成功，返回0就是查无此人。
 
-4，导出考勤文件
+5，导出考勤文件
         char* LoadVerbFile(char* filename);
-5，加载考勤文件
-6，加载考勤文件（仅个人信息）。
+6，加载考勤文件
+7，加载考勤文件（仅个人信息）。
 
