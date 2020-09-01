@@ -14,3 +14,4 @@ Node* LoadRBTree(char* filename, Node* (*byScanf)(char* s));
 SomeNodes GetAllNodes(Node* root, int MaxNum);
 void GetAllNodes2(Node* root, Node** datas);
 void dumpNode(Node a);
+void DeleteBalance(Node* a);

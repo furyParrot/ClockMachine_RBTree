@@ -104,7 +104,7 @@ int AddNode(Node* root, Node* newnode) {
 
                             root->dad->keyvalue = root->keyvalue;
                             ContCpy(root->dad->cont, root->cont);
-                            //free(root);
+                            free(root);
 
                         }
                         else {//爸爸是爷爷的左儿子，和我反向：需要旋转操作
@@ -186,7 +186,7 @@ int AddNode(Node* root, Node* newnode) {
 
                             root->dad->keyvalue = root->keyvalue;
                             ContCpy(root->dad->cont , root->cont);
-                            //free(root);
+                            free(root);
                         }
                         else {//爸爸是爷爷的右儿子，和我反向：需要旋转操作
                             root->lson = newnode->rson;
@@ -204,9 +204,68 @@ int AddNode(Node* root, Node* newnode) {
     }
     return 1;
 }
+
 int RemoveNode(Node* node) {
+    //儿子的数量
+    int sonNum = (node->lson == NULL ? 0 : 1) + (node->rson == NULL ? 0 : 1);
+    //无子节点
+    if (sonNum == 0) {
+        if (node->Red1Black0 == 1) {//本节点为红色，直接删除
+            int left1right0 = (node->dad->lson == NULL) ? 0 : ((node->dad->lson->keyvalue == node->keyvalue) ? 1 : 0);
+            if (node->Red1Black0 == 1) {
+                if (left1right0 == 1) {
+                    node->dad->lson = NULL;
+                }
+                else {
+                    node->dad->rson = NULL;
+                }
+                free(node);
+            }
+        }
+        else {//本节点为黑色，情况复杂
+            //进行DeleteBalance：
+            DeleteBalance(node->dad);
+        }
+    }
+    else if (sonNum == 1) {//有一个子节点
+        //看看子节点在哪边
+        int left1right0 = (node->lson == NULL) ? 0 : 1;
+        if (left1right0 == 1) {//左边子节点接替自己的地位。
+            //让左边子节点的儿子们都指向自己，
+            node->lson->lson->dad = node;
+            node->lson->rson->dad = node;
+            //将左节点的内容拿过来，
+            node->keyvalue = node->lson->keyvalue;
+            ContCpy(node->cont, node->lson->cont);
+            //将自己的儿子指向左节点的儿子们
+            node->rson = node->lson->rson;
+            node->lson = node->lson->lson;
+        }
+        else {//右边子节点接替自己的地位。
+            //让右边子节点的儿子们都指向自己，
+            node->rson->lson->dad = node;
+            node->rson->rson->dad = node;
+            //将左右节点的内容拿过来，
+            node->keyvalue = node->rson->keyvalue;
+            ContCpy(node->cont, node->rson->cont);
+            //将自己的儿子指向右节点的儿子们
+            node->lson = node->rson->lson;
+            node->rson = node->rson->rson;
+        }
+    }
+    else {//有两个子节点，寻找右边的最大节点，用它替换本节点，并且将这个节点进行删除。
+        Node* MinLagerNode = GetMinNode(node->rson);
+        node->keyvalue = MinLagerNode->keyvalue;
+        ContCpy(node->cont, MinLagerNode->cont);
+        RemoveNode(MinLagerNode);
+    }
     return 0;
 }
+//会在操作完成之后，移除一个黑色节点，或者降低一个黑色2节点的权值。
+void DeleteBalance(Node* a){
+
+}
+
 Node* FindNode(int keyvalue) {
     return (Node*)malloc(sizeof(Node));
 }
