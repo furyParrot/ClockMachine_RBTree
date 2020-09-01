@@ -238,32 +238,43 @@ void dumpNode(Node a){
 
 int main(){
     printf("hello world\n");
-    Stru_BaseInfo s1 = {10,"lyw",22,'m',17777777,"41819@qq.com"};
+    Stru_BaseInfo s1 = {10,"101010",22,'m',17777777,"41819@qq.com"};
     Stru_ClockInfo s1c;
     Stru_FullInfo s1f = {s1,s1c};
     Node a = {10,1,&s1f,NULL,NULL,NULL};
 
 
-    Stru_BaseInfo s2 = {7,"lyqwe",22,'f',17777777,"41819@qq.com"};
+    Stru_BaseInfo s2 = {7,"7777",22,'f',17777777,"41819@qq.com"};
     Stru_ClockInfo s2c;
     Stru_FullInfo s2f = {s2,s2c};
     Node b = {7,1,&s2f,NULL,NULL,NULL};
 
 
-    Stru_BaseInfo s3 = {7,"vew",22,'f',17777777,"41819@qq.com"};
+    Stru_BaseInfo s3 = {7,"1212",22,'f',17777777,"41819@qq.com"};
     Stru_ClockInfo s3c;
     Stru_FullInfo s3f = {s3,s3c};
     Node d = {12,1,&s3f,NULL,NULL,NULL};
 
 
-    Stru_BaseInfo s4 = {7,"ddd",22,'f',17777777,"41819@qq.com"};
+    Stru_BaseInfo s4 = {7,"1919",22,'f',17777777,"41819@qq.com"};
     Stru_ClockInfo s4c;
     Stru_FullInfo s4f = {s4,s4c};
     Node e = {19,1,&s4f,NULL,NULL,NULL};
 
 
+    Stru_BaseInfo s5 = {7,"666",22,'f',17777777,"41819@qq.com"};
+    Stru_ClockInfo s5c;
+    Stru_FullInfo s5f = {s5,s5c};
+    Node f = {1,1,&s5f,NULL,NULL,NULL};
+
+
+    Stru_BaseInfo s6 = {7,"333",22,'f',17777777,"41819@qq.com"};
+    Stru_ClockInfo s6c;
+    Stru_FullInfo s6f = {s6,s6c};
+    Node g = {3,1,&s6f,NULL,NULL,NULL};
+
     Node* root = CreatRBTree();
-    AddNode(root,&a);AddNode(root,&b);AddNode(root,&d);AddNode(root,&e);
+    AddNode(root,&a);AddNode(root,&b);AddNode(root,&d);AddNode(root,&e);AddNode(root,&g);
     
     SomeNodes c = GetAllNodes(root,10);
     for(int i =0;i<c.num;i++){
