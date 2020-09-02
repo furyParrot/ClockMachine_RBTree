@@ -5,6 +5,16 @@
 #include <stdio.h>
 #include <string.h>
 #include "RBTree.h"
+#include "myfunction.h"
+
+Node* GetMinNode(Node* node) {
+    if (node->lson == NULL) {
+        return node;
+    }
+    else {
+        return GetMinNode(node->lson);
+    }
+}
 
 Node* CreatRBTree() {
     Node* a = (Node*)malloc(sizeof(Node));
@@ -324,7 +334,7 @@ void dumpNode(Node a) {
 
 
 int main() {
-    printf("hello world\n");
+    hello();
 
     Stru_BaseInfo s1 = { 10,"101010",22,'m',17777777,"41819@qq.com" };
     Stru_ClockInfo *s1c = (Stru_ClockInfo*)malloc(sizeof(Stru_ClockInfo));
