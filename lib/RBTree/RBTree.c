@@ -215,25 +215,27 @@ int AddNode(Node* root, Node* newnode) {
 }
 
 int RemoveNode(Node* node) {
+    if(node==NULL){
+        return 0;
+    }
     //儿子的数量
     int sonNum = (node->lson == NULL ? 0 : 1) + (node->rson == NULL ? 0 : 1);
     //无子节点
     if (sonNum == 0) {
         if (node->Red1Black0 == 1) {//本节点为红色，直接删除
             int left1right0 = (node->dad->lson == NULL) ? 0 : ((node->dad->lson->keyvalue == node->keyvalue) ? 1 : 0);
-            if (node->Red1Black0 == 1) {
-                if (left1right0 == 1) {
-                    node->dad->lson = NULL;
-                }
-                else {
-                    node->dad->rson = NULL;
-                }
-                free(node);
+            if (left1right0 == 1) {
+                node->dad->lson = NULL;
             }
+            else {
+                node->dad->rson = NULL;
+            }
+            //不知道为什么出问题
+            //free(node);
         }
         else {//本节点为黑色，情况复杂
             //进行DeleteBalance：
-            DeleteBalance(node->dad);
+            DeleteBalance(node);
         }
     }
     else if (sonNum == 1) {//有一个子节点
@@ -241,8 +243,8 @@ int RemoveNode(Node* node) {
         int left1right0 = (node->lson == NULL) ? 0 : 1;
         if (left1right0 == 1) {//左边子节点接替自己的地位。
             //让左边子节点的儿子们都指向自己，
-            node->lson->lson->dad = node;
-            node->lson->rson->dad = node;
+            if(node->lson->lson!=NULL)node->lson->lson->dad = node;
+            if(node->lson->rson!=NULL)node->lson->rson->dad = node;
             //将左节点的内容拿过来，
             node->keyvalue = node->lson->keyvalue;
             ContCpy(node->cont, node->lson->cont);
@@ -252,8 +254,8 @@ int RemoveNode(Node* node) {
         }
         else {//右边子节点接替自己的地位。
             //让右边子节点的儿子们都指向自己，
-            node->rson->lson->dad = node;
-            node->rson->rson->dad = node;
+            if(node->rson->lson!=NULL) node->rson->lson->dad = node;
+            if(node->rson->rson!=NULL) node->rson->rson->dad = node;
             //将左右节点的内容拿过来，
             node->keyvalue = node->rson->keyvalue;
             ContCpy(node->cont, node->rson->cont);
@@ -268,15 +270,130 @@ int RemoveNode(Node* node) {
         ContCpy(node->cont, MinLagerNode->cont);
         RemoveNode(MinLagerNode);
     }
-    return 0;
+    return 1;
 }
 //会在操作完成之后，移除一个黑色节点，或者降低一个黑色2节点的权值。
-void DeleteBalance(Node* a){
+void DeleteBalance(Node* n){
+    //先删除,
+    Node* p = n->dad;
+    Node* s = (n->dad==NULL)?NULL:((n->dad->rson->keyvalue==n->keyvalue)?n->dad->lson:n->dad->rson);
+    int sL1R0 = (s==NULL)?3:( (n->dad->lson->keyvalue==s->keyvalue)?1:0);
+    Node* sl = (s==NULL)?NULL:(s->lson);
+    Node* sr = (s==NULL)?NULL:(s->rson);
+    if(n->Red1Black0==2){
+        n->Red1Black0 = 0;
+    }else{
+        if(n->dad == NULL){
+            n->keyvalue =0;
+            n->cont =NULL;
+        }else{
+            if(sL1R0==1){
+                n->dad->rson =NULL;
+            }else{
+                n->dad->lson =NULL;
+            }
+            //不知道为什么
+            //free(n);
+        }
+    }
+    //然后开始判断是否需要平衡
+    if(n->dad==NULL){//n为根节点，无需平衡
+        return;
+    }else{
+        if(s->Red1Black0!=1){//兄黑
+            if(((s->rson==NULL)|| (s->rson->Red1Black0!=1  ))&&((s->lson==NULL)||(s->lson->Red1Black0!=1))){//兄子节点全黑
+                if(p->Red1Black0!=1){//父黑
+                    s->Red1Black0=1;
+                    p->Red1Black0=2;
+                    DeleteBalance(p);
+                }else{//父红
+                    p->Red1Black0 =0;
+                    s->Red1Black0 =1;
+                    //交换ps颜色，平衡结束
+                }
+            }else{//兄子节点不全黑
+                //拐的时候，先弄直
+                if((sL1R0==1) && (sr!=NULL) && (sr->Red1Black0==1 )){
+                    sr->dad = p;
+                    p->lson = sr;
 
+                    s->rson = sr->lson;
+                    if(sr->lson!=NULL) sr->lson->dad = s;
+
+                    s->dad = sr;
+                    sr->lson =s;
+
+                    s->Red1Black0=1;
+                    sr->Red1Black0 =0;
+                }else if((sL1R0==0)&&(sl!=NULL)&&(sl->Red1Black0==1)){
+                    sl->dad =p;
+                    p->rson = sl;
+
+                    s->lson = sl->rson;
+                    if(sl->rson!=NULL)sl->rson->dad =s;
+
+                    s->dad = sl;
+                    sl->rson = s;
+
+                    s->Red1Black0 =1;
+                    sl->Red1Black0 =0;
+                }
+                //直的时候，直接处理
+                if(sL1R0 ==1){//s在左边
+                    Node* newP = (Node*)malloc(sizeof(Node));
+                    newP->keyvalue = p->keyvalue;
+                    ContCpy(newP->cont,p->cont);
+                    p->keyvalue = s->keyvalue;
+                    ContCpy(p->cont,s->cont);
+
+                    newP->lson = sr;
+                    if(sr!=NULL)sr->dad = newP;
+
+                    newP->rson = p->rson;
+                    if(p->rson!=NULL)p->rson->dad = newP;
+
+                    sl->dad = p;
+                    p->lson = sl;
+
+                    newP->dad = p;
+                    p->rson = newP;
+                    sl->Red1Black0 = 0;
+                }else{
+                    Node* newP = (Node*)malloc(sizeof(Node));
+                    newP->keyvalue = p->keyvalue;
+                    ContCpy(newP->cont,p->cont);
+                    p->keyvalue = s->keyvalue;
+                    ContCpy(p->cont,s->cont);
+
+                    newP->rson = sl;
+                    if(sl!=NULL)sl->dad = newP;
+
+                    newP->lson = p->lson;
+                    if(p->lson!=NULL)p->lson->dad = newP;
+
+                    sr->dad = p;
+                    p->rson = sr;
+
+                    newP->dad = p;
+                    p->lson = newP;
+                    sr->Red1Black0 = 0;
+                }
+            }
+        }
+    }
 }
 
-Node* FindNode(int keyvalue) {
-    return (Node*)malloc(sizeof(Node));
+Node* FindNode(Node* root,int keyvalue) {
+    if(root==NULL){return NULL;}
+    if((root->keyvalue )== keyvalue){
+        return root;
+    }else{
+        if(keyvalue>(root->keyvalue)){
+            return FindNode(root->rson,keyvalue);
+        }else{
+            return FindNode(root->lson,keyvalue);
+        }
+    }
 }
 int SaveRBTree(char* filename, char* (*tostring)(Node* a)) {
     return 0;
@@ -375,22 +492,20 @@ int main() {
     AddNode(root, &d);
     AddNode(root, &e);
     AddNode(root, &f);
-    
-
-
+    printf("移除之前：\n");
     SomeNodes sn = GetAllNodes(root, 10);
     for (int i = 0; i < sn.num; i++) {
         dumpNode(*sn.datas[i]);
     }
+
+    RemoveNode(FindNode(root,e.keyvalue));
+    RemoveNode(FindNode(root,a.keyvalue));
+    RemoveNode(FindNode(root,f.keyvalue));
+    RemoveNode(FindNode(root,b.keyvalue));
+
+    printf("移除之后：\n");
+    sn = GetAllNodes(root, 10);
+    for (int i = 0; i < sn.num; i++) {
+        dumpNode(*sn.datas[i]);
+    }
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

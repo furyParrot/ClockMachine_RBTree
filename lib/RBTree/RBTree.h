@@ -8,7 +8,7 @@ typedef struct SomeNodes {
 Node* CreatRBTree();
 int AddNode(Node* root, Node* newnode);
 int RemoveNode(Node* node);
-Node* FindNode(int keyvalue);
+Node* FindNode(Node* root,int keyvalue);
 int SaveRBTree(char* filename, char* (*tostring)(Node* a));
 Node* LoadRBTree(char* filename, Node* (*byScanf)(char* s));
 SomeNodes GetAllNodes(Node* root, int MaxNum);
