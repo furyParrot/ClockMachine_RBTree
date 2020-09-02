@@ -114,7 +114,7 @@ int AddNode(Node* root, Node* newnode) {
 
                             root->dad->keyvalue = root->keyvalue;
                             ContCpy(root->dad->cont, root->cont);
-                            free(root);
+                            //free(root);
 
                         }
                         else {//爸爸是爷爷的左儿子，和我反向：需要旋转操作
@@ -196,7 +196,7 @@ int AddNode(Node* root, Node* newnode) {
 
                             root->dad->keyvalue = root->keyvalue;
                             ContCpy(root->dad->cont , root->cont);
-                            free(root);
+                            //free(root);
                         }
                         else {//爸爸是爷爷的右儿子，和我反向：需要旋转操作
                             root->lson = newnode->rson;
