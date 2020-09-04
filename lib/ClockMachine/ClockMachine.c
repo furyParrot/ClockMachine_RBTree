@@ -107,7 +107,7 @@ int LoadFile(char* filename){
 Stru_FullInfo** GetAllClockInfo(int * outputnum, int maxnum){
     if(root==NULL){printf("please creat a new tab or load from file.\n");return 0;}
     SomeNodes somenode = GetAllNodes(root,maxnum);
-    Stru_FullInfo** res = (Stru_FullInfo*)malloc(sizeof(Stru_FullInfo*)*somenode.num);
+    Stru_FullInfo** res = (Stru_FullInfo**)malloc(sizeof(Stru_FullInfo*)*somenode.num);
     for(int i=0; i<somenode.num; i++){
         res[i] = somenode.datas[i]->cont;
     }

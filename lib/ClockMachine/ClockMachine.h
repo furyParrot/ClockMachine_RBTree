@@ -39,16 +39,11 @@ typedef struct SomeNodes {
 } SomeNodes;
 
 //记录了一周的表格，包含了若干人，以及年日。
-typedef struct TableOfOneWeek{
-    int year;
-    int day;
-    Node* rootNode;
-}TableOfOneWeek;
 void CreatANewTab();
 int AddEmployee(Stru_BaseInfo a);
 int DelEmployee(int id);
 int ClockIn(int id );
-int SaveFile(TableOfOneWeek* a);
+int SaveFile(char* filename);
 int LoadFile(char* filename);
 Stru_FullInfo** GetAllClockInfo(int * outputnum, int maxnum);
 

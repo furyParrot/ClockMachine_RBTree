@@ -1,0 +1,1 @@
+gcc ..\src\main.c ..\src\StaffManager.c mylib.dll -o StaffManager.exe -g -Wall
