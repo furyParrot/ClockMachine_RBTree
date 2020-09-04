@@ -341,6 +341,7 @@ void DeleteBalance(Node* n){
                 //直的时候，直接处理
                 if(sL1R0 ==1){//s在左边
                     Node* newP = (Node*)malloc(sizeof(Node));
+                    newP->cont = (Content*)malloc(sizeof(Content));
                     newP->keyvalue = p->keyvalue;
                     ContCpy(newP->cont,p->cont);
                     p->keyvalue = s->keyvalue;
@@ -360,6 +361,7 @@ void DeleteBalance(Node* n){
                     sl->Red1Black0 = 0;
                 }else{
                     Node* newP = (Node*)malloc(sizeof(Node));
+                    newP->cont = (Content*)malloc(sizeof(Content));
                     newP->keyvalue = p->keyvalue;
                     ContCpy(newP->cont,p->cont);
                     p->keyvalue = s->keyvalue;
@@ -395,11 +397,28 @@ Node* FindNode(Node* root,int keyvalue) {
         }
     }
 }
-int SaveRBTree(char* filename, char* (*tostring)(Node* a)) {
-    return 0;
+int SaveRBTree(Node* root,char* filename, char* (*tostring)(Node* a)) {
+    SomeNodes a = GetAllNodes(root, 1000);
+    FILE * p = fopen(filename , "w");
+    fprintf(p,"%d\n",a.num);
+    for(int i=0; i < a.num ; i++){
+        fprintf(p,"%s\n",tostring(a.datas[i]));
+    }
+    fclose(p);
+    return a.num;
 }
 Node* LoadRBTree(char* filename, Node* (*byScanf)(char* s)) {
-    return (Node*)malloc(sizeof(Node));
+    Node* root = CreatRBTree();
+    int num;
+    FILE* p=fopen(filename,"r");
+    fscanf(p,"%d",&num);
+    char *one_line;
+    one_line = (char*)malloc( 1000 * sizeof(char));
+    for(int i=0;i<num+1;i++){
+        fgets(one_line, 1000, p);
+        AddNode(root,byScanf(one_line));
+    }
+    return root;
 }
 
 Node** datas;
@@ -492,18 +511,24 @@ int main() {
     AddNode(root, &d);
     AddNode(root, &e);
     AddNode(root, &f);
-    printf("移除之前：\n");
+    printf("before remove:\n");
     SomeNodes sn = GetAllNodes(root, 10);
     for (int i = 0; i < sn.num; i++) {
         dumpNode(*sn.datas[i]);
     }
 
-    RemoveNode(FindNode(root,e.keyvalue));
-    RemoveNode(FindNode(root,a.keyvalue));
-    RemoveNode(FindNode(root,f.keyvalue));
-    RemoveNode(FindNode(root,b.keyvalue));
+    printf("after remove:\n");
+    Node * nn = FindNode(root,10);
+    RemoveNode(nn);
 
-    printf("移除之后：\n");
+    sn = GetAllNodes(root, 10);
+    for (int i = 0; i < sn.num; i++) {
+        dumpNode(*sn.datas[i]);
+    }
+    printf("save file to datas.txt and read:\n");
+    SaveRBTree(root,"data.txt",NodeToString);
+    root = LoadRBTree("data.txt",StringToNode);
+    
     sn = GetAllNodes(root, 10);
     for (int i = 0; i < sn.num; i++) {
         dumpNode(*sn.datas[i]);
