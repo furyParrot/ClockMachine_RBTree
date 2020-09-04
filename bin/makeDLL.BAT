@@ -1,1 +1,0 @@
-gcc ..\lib\ClockMachine\ClockMachine.c ..\lib\RBTree\RBTree.c ..\lib\UsrTime\usr_time.c -shared -o mylib.dll

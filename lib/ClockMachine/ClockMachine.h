@@ -16,13 +16,19 @@ typedef struct Stru_ClockInfo{
 }Stru_ClockInfo;
 
 typedef struct PersonWeekSummary{
-
+    int ID;
+    int WeekWorkSecond;
+    int LateTimes;
+    int EarlyLeave;
+    int AbandonTImes;
+    int ClkLakeTimes;
 }PersonWeekSummary;
 
 //记录着一个人的完整信息，包含个人信息和一周打卡信息
 typedef struct Stru_FullInfo{
     Stru_BaseInfo baseInfo;
-    Stru_ClockInfo clockInfo;nkjfwqe
+    Stru_ClockInfo clockInfo;
+    PersonWeekSummary pws;
 }Stru_FullInfo;
 
 typedef Stru_FullInfo Content;

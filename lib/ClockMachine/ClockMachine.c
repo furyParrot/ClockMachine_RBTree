@@ -7,14 +7,17 @@
 
 char* NodeToString(Node* a){
     char *s = (char *)malloc(1001);
-    sprintf(s,"key=%d id=%d name=%s age=%d gender=%c phonenum=%ld email=%s %d %d %d %d %d %d %d %d %d %d",
+    sprintf(s,"key=%d id=%d name=%s age=%d gender=%c phonenum=%ld email=%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
     a->keyvalue,a->cont->baseInfo.id,a->cont->baseInfo.name,
     a->cont->baseInfo.age,a->cont->baseInfo.gender,a->cont->baseInfo.phonenum,a->cont->baseInfo.email,
     a->cont->clockInfo.mon_in,a->cont->clockInfo.mon_out,
     a->cont->clockInfo.tue_in,a->cont->clockInfo.tue_out,
     a->cont->clockInfo.wed_in,a->cont->clockInfo.wed_out,
     a->cont->clockInfo.thu_in,a->cont->clockInfo.thu_out,
-    a->cont->clockInfo.fri_in,a->cont->clockInfo.fri_out);
+    a->cont->clockInfo.fri_in,a->cont->clockInfo.fri_out,
+    a->cont->pws.ID,a->cont->pws.WeekWorkSecond,
+    a->cont->pws.LateTimes,a->cont->pws.EarlyLeave,
+    a->cont->pws.AbandonTImes,a->cont->pws.ClkLakeTimes);
     return s;
 }
 Node* StringToNode(char* s){
@@ -26,14 +29,17 @@ Node* StringToNode(char* s){
     a->rson = NULL;
     a->dad = NULL;
 
-    sscanf(s,"key=%d id=%d name=%s age=%d gender=%c phonenum=%ld email=%s %d %d %d %d %d %d %d %d %d %d",
+    sscanf(s,"key=%d id=%d name=%s age=%d gender=%c phonenum=%ld email=%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
     &a->keyvalue,&a->cont->baseInfo.id,a->cont->baseInfo.name,
     &a->cont->baseInfo.age,&a->cont->baseInfo.gender,&a->cont->baseInfo.phonenum,a->cont->baseInfo.email,
     &a->cont->clockInfo.mon_in,&a->cont->clockInfo.mon_out,
     &a->cont->clockInfo.tue_in,&a->cont->clockInfo.tue_out,
     &a->cont->clockInfo.wed_in,&a->cont->clockInfo.wed_out,
     &a->cont->clockInfo.thu_in,&a->cont->clockInfo.thu_out,
-    &a->cont->clockInfo.fri_in,&a->cont->clockInfo.fri_out);
+    &a->cont->clockInfo.fri_in,&a->cont->clockInfo.fri_out,
+    &a->cont->pws.ID,&a->cont->pws.WeekWorkSecond,
+    &a->cont->pws.LateTimes,&a->cont->pws.EarlyLeave,
+    &a->cont->pws.AbandonTImes,&a->cont->pws.ClkLakeTimes);
     return a;
 }
 
