@@ -50,7 +50,7 @@ int AddEmployee(Stru_BaseInfo a){
     node->cont->baseInfo = a;
     node->keyvalue = a.id;
     node->cont->clockInfo.mon_in = 90000;
-    node->cont->clockInfo.mon_out = 90000;
+    node->cont->clockInfo.mon_out = 90000; 
     node->cont->clockInfo.tue_in = 90000;
     node->cont->clockInfo.tue_out = 90000;
     node->cont->clockInfo.wed_in = 90000;
@@ -59,7 +59,12 @@ int AddEmployee(Stru_BaseInfo a){
     node->cont->clockInfo.thu_out = 90000;
     node->cont->clockInfo.fri_in = 90000;
     node->cont->clockInfo.fri_out = 90000;
-
+    node->cont->pws.ID=0;
+    node->cont->pws.WeekWorkSecond=0;
+    node->cont->pws.LateTimes=0;
+    node->cont->pws.EarlyLeave=0;
+    node->cont->pws.AbandonTImes=0;
+    node->cont->pws.ClkLakeTimes=0;
     AddNode(root,node);
 }
 

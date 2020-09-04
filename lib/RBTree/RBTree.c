@@ -420,6 +420,7 @@ Node* LoadRBTree(char* filename, Node* (*StringToNode)(char* s)) {
         fgets(one_line, 1000, p);
         AddNode(root,StringToNode(one_line));
     }
+    printf("file Load Succeed: %d Nodes Loaded!\n",num);
     return root;
 }
 
