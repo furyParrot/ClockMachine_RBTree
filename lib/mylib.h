@@ -51,6 +51,3 @@ int ClockIn(int id );
 int SaveFile(TableOfOneWeek* a);
 int LoadFile(char* filename);
 Stru_FullInfo** GetAllClockInfo(int * outputnum, int maxnum);
-
-char* NodeToString(Node* a);
-Node* StringToNode(char* s);

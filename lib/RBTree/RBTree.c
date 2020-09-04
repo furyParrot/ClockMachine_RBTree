@@ -397,26 +397,28 @@ Node* FindNode(Node* root,int keyvalue) {
         }
     }
 }
-int SaveRBTree(Node* root,char* filename, char* (*tostring)(Node* a)) {
+int SaveRBTree(Node* root,char* filename, char* (*NodeToString)(Node* a)) {
     SomeNodes a = GetAllNodes(root, 1000);
     FILE * p = fopen(filename , "w");
+    if(p==NULL){printf("file ERROR!\n"); return 0;}
     fprintf(p,"%d\n",a.num);
     for(int i=0; i < a.num ; i++){
-        fprintf(p,"%s\n",tostring(a.datas[i]));
+        fprintf(p,"%s\n",NodeToString(a.datas[i]));
     }
     fclose(p);
     return a.num;
 }
-Node* LoadRBTree(char* filename, Node* (*byScanf)(char* s)) {
+Node* LoadRBTree(char* filename, Node* (*StringToNode)(char* s)) {
     Node* root = CreatRBTree();
     int num;
     FILE* p=fopen(filename,"r");
+    if(p==NULL){printf("file ERROR!\n"); return NULL;}
     fscanf(p,"%d",&num);
     char *one_line;
     one_line = (char*)malloc( 1000 * sizeof(char));
     for(int i=0;i<num+1;i++){
         fgets(one_line, 1000, p);
-        AddNode(root,byScanf(one_line));
+        AddNode(root,StringToNode(one_line));
     }
     return root;
 }
@@ -466,7 +468,7 @@ void dumpNode(Node a) {
 
 }
 
-
+/*
 
 int main() {
     printf("hello world\n");
@@ -534,3 +536,4 @@ int main() {
         dumpNode(*sn.datas[i]);
     }
 }
+*/
