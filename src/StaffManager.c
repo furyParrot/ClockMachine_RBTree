@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../lib/ClockMachine/ClockMachine.h"
+#include "../lib/mylib.h"
 #include "StaffManager.h"
 void ShowWeekSummay(void);
 void ShowInfomations(void);
@@ -62,7 +62,7 @@ Please choose function:\n\
             ShowWeekSummay();
             break;
         case 7:
-            ShowWeekSummay();
+            ShowInfomations();
             break;
         case 8:
             printf("Please input filename:\n");
@@ -76,10 +76,20 @@ Please choose function:\n\
     }
     }
 }
+void dump(Stru_FullInfo * a){
+    printf("%d %s %d %c %ld %s\n",a->baseInfo.id,a->baseInfo.name,a->baseInfo.age,a->baseInfo.gender,a->baseInfo.phonenum,a->baseInfo.email);
+}
 
 void ShowWeekSummay(void){
-
+    //工号，工作时长，迟到次数，早退次数，旷工次数，缺卡次数
+    int num;
+    Stru_FullInfo** a = GetAllClockInfo(&num,1000);
+    printf("ID\tName\t");
 }
-void ShowInfomation(void){
-
+void ShowInfomations(void){
+    int num;
+    Stru_FullInfo** a = GetAllClockInfo(&num,1000);
+    for(int i=0 ; i<num ; i++){
+        dump(a[i]);
+    }
 }
